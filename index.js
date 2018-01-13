@@ -124,9 +124,8 @@ const forwardMessages = async ( fromChannel, toChannel ) => {
 
 const run = () => {
   forwardMessages(config.fromChannel, config.toChannel).then(() => setTimeout(run, REQUEST_TIMEOUT * 1000));
-  // return forwardMessages(craftCryptoChannel, test2Channel);
 };
-run();
+if (config.run_import) run();
 
 
 
