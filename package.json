@@ -1,0 +1,17 @@
+{
+  "name": "telegramSilenceReposter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mtproto-storage-fs": "^0.3.1",
+    "prompt": "^1.0.0",
+    "qs": "^6.5.1",
+    "telegram-mtproto": "^2.2.2"
+  }
+}

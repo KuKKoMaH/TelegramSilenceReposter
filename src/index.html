@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+        integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+  <title>Collective channels</title>
+</head>
+<body>
+
+<div class="container">
+  <div id="sendCodeBlock" class="d-none">
+    <h1>Авторизация</h1>
+    <form id="sendCode">
+      <div class="form-group">
+        <label for="phone">Телефон</label>
+        <input type="tel" class="form-control" id="phone">
+      </div>
+      <button type="submit" class="btn btn-primary">Авторизация</button>
+    </form>
+  </div>
+  <div id="signInBlock" class="d-none">
+    <h1>Подтверждение</h1>
+    <form id="signIn">
+      <div class="form-group">
+        <label for="code">Код</label>
+        <input type="tel" class="form-control" id="code">
+      </div>
+      <button type="submit" class="btn btn-primary">Подтверждение</button>
+    </form>
+
+  </div>
+  <pre>
+call('messages.getDialogs', {limit: 5})
+call('channels.getFullChannel', {channel: { _:"inputChannel", channel_id: 1158380792, access_hash:"15698840776860368125"}})
+call('messages.getHistory', {peer: {_:'inputPeerChannel', channel_id: 1158380792, access_hash:"15698840776860368125"}, limit: 5})
+  </pre>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+<script>
+  let phone = '79046418226';
+  let phone_code_hash = 'bcb53023f3c6acf2fe';
+  let code;
+
+  $('#sendCodeBlock').removeClass('d-none');
+  // $('#signInBlock').removeClass('d-none');
+
+  $('#sendCode').on('submit', ( e ) => {
+    e.preventDefault();
+    phone = $('#phone').val();
+    $.ajax('/sendCode', { method: 'post', data: { phone_number: phone } })
+      .then(( response ) => {
+        console.log(response);
+        phone_code_hash = response;
+        $('#sendCodeBlock').addClass('d-none');
+        $('#signInBlock').removeClass('d-none');
+      })
+      .catch(err => alert(err.responseJSON.error));
+  });
+
+  $("#signIn").on('submit', ( e ) => {
+    e.preventDefault();
+    code = $('#code').val();
+    $.ajax('/singIn', { method: 'post', data: { phone_number: phone, phone_code_hash, phone_code: code } })
+      .then(( response ) => {
+        console.log(response);
+        phone_code_hash = response;
+        // $('#sendCodeBlock').addClass('d-none');
+        // $('#signInBlock').removeClass('d-none');
+      })
+      .catch(err => alert(err.responseJSON.error));
+
+  });
+
+  function call( method, params ) {
+    return $.ajax('/test', { method: 'post', data: { data: JSON.stringify({ method, params }) } })
+  }
+</script>
+</body>
+</html>
