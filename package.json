@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.5",
     "mtproto-storage-fs": "^0.3.1",
     "prompt": "^1.0.0",
     "qs": "^6.5.1",
